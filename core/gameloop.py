@@ -23,7 +23,7 @@ class GameLoop:
         bullets: pygame.sprite.Group,
         play_button: Button,
         scoreboard: Scoreboard,
-        stats: GameStats
+        stats: GameStats,
     ):
 
         self.settings = settings
@@ -72,7 +72,7 @@ class GameLoop:
                 self.check_keyup_event(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
-                self.check_play_button(x,y)
+                self.check_play_button(x, y)
 
     def check_play_button(self, x, y):
         clicked = self.play_button.rect.collidepoint(x, y)
@@ -94,8 +94,6 @@ class GameLoop:
             self.fleetFactory.create_fleet(self.screen, self.ship, self.aliens)
             self.ship.center_ship()
 
-
-
     def update_screen(self):
         self.screen.fill(self.settings.bg_color)
 
@@ -104,29 +102,33 @@ class GameLoop:
         self.ship.blitme()
         self.aliens.draw(self.screen)
 
-        #TODO add scoreboard
+        # TODO add scoreboard
         self.scoreboard.show_score()
 
         if not self.stats.game_active:
             self.play_button.draw_button()
 
-
         pygame.display.flip()
 
     def fire_bullet(self):
         if len(self.bullets) < self.settings.bullets_allowed:
-            #new_bullet = Bullet(self.settings, self.screen, self.ship)
-            new_bullets = self.ship.gun.create_bullet(self.settings, self.screen, self.ship)
+            # new_bullet = Bullet(self.settings, self.screen, self.ship)
+            new_bullets = self.ship.gun.create_bullet(
+                self.settings, self.screen, self.ship
+            )
             self.bullets.add(*new_bullets)
 
     def update_bullets(self):
         self.bullets.update()
 
         for bullet in self.bullets.copy():
-            if bullet.rect.bottom <= 0 or bullet.rect.left < 0 or bullet.rect.right > self.settings.screen_width:
+            if (
+                bullet.rect.bottom <= 0
+                or bullet.rect.left < 0
+                or bullet.rect.right > self.settings.screen_width
+            ):
                 self.bullets.remove(bullet)
 
-        
         self.check_bullet_alien_collision()
 
     def check_highscore(self):
@@ -137,7 +139,7 @@ class GameLoop:
     def check_bullet_alien_collision(self):
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
-        #TODO increase score
+        # TODO increase score
 
         if collisions:
             for bullet, aliens in collisions.items():
@@ -147,16 +149,14 @@ class GameLoop:
                 bullet.on_hit(self.bullets)
             self.check_highscore()
 
-
-
         if len(self.aliens) == 0:
             self.bullets.empty()
             self.settings.increase_speed()
 
-            #TODO update scoreboard
+            # TODO update scoreboard
             self.stats.level += 1
             self.scoreboard.prep_level()
-            
+
             self.fleetFactory.create_fleet(self.screen, self.ship, self.aliens)
 
     def check_fleet_edges(self):
@@ -171,15 +171,15 @@ class GameLoop:
         self.settings.fleet_direction *= -1
 
     def ship_hit(self):
-        #TODO add health check
+        # TODO add health check
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
 
             self.scoreboard.prep_ships()
         else:
-            self.stats.game_active = False 
+            self.stats.game_active = False
             pygame.mouse.set_visible(True)
-        
+
         self.aliens.empty()
         self.bullets.empty()
 
@@ -193,7 +193,7 @@ class GameLoop:
         for alien in self.aliens.sprites():
             if alien.rect.bottom >= screen_rect.bottom:
                 self.ship_hit()
-                break 
+                break
 
     def update_aliens(self):
         self.check_fleet_edges()
@@ -203,6 +203,3 @@ class GameLoop:
             self.ship_hit()
 
         self.check_fleet_bottom()
-
-
-
