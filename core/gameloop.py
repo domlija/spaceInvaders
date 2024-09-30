@@ -51,6 +51,10 @@ class GameLoop:
             self.ship.gun = gun.DoubleGun()
         elif event.key == pygame.K_3:
             self.ship.gun = gun.SplitterGun()
+        elif event.key == pygame.K_4:
+            self.ship.gun = gun.PierceGun()
+        elif event.key == pygame.K_5:
+            self.ship.gun = gun.SplitterPierceGun()
 
     def check_keyup_event(self, event):
         if event.key == pygame.K_RIGHT:
@@ -119,7 +123,7 @@ class GameLoop:
         self.bullets.update()
 
         for bullet in self.bullets.copy():
-            if bullet.rect.bottom <= 0:
+            if bullet.rect.bottom <= 0 or bullet.rect.left < 0 or bullet.rect.right > self.settings.screen_width:
                 self.bullets.remove(bullet)
 
         
@@ -139,7 +143,7 @@ class GameLoop:
             for bullet, aliens in collisions.items():
                 self.stats.score += self.settings.alien_points * len(aliens)
                 self.scoreboard.prep_score()
-                
+
                 bullet.on_hit(self.bullets)
             self.check_highscore()
 

@@ -1,3 +1,4 @@
+from typing import Any
 import pygame
 import math
 from pygame.sprite import Sprite
@@ -50,7 +51,24 @@ class Bullet(Sprite):
     def on_hit(self, bullets):
         pass 
 
-class SplitterBullet(Bullet):
+class SplitterDecorator(Bullet):
+
+    def __init__(self, bullet : Bullet):
+        self._bullet = bullet
+
+    def __getattr__(self, name):
+        """
+        If an attribute is not found on the decorator, it delegates the lookup to the wrapped bullet.
+        """
+        return getattr(self._bullet, name)
+    
+    def __setattr__(self, name, value):
+        # Delegate attribute setting to the wrapped bullet
+        if name == "_bullet":
+            # Allow setting the wrapped bullet itself
+            super().__setattr__(name, value)
+        else:
+            setattr(self._bullet, name, value)
 
     def on_hit(self, bullets):
         left_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(0))
@@ -65,4 +83,41 @@ class SplitterBullet(Bullet):
 
 
         bullets.add(*[left_bullet, right_bullet])
+
+        self._bullet.on_hit(bullets)
+
         
+class PierceDecorator(Bullet):
+    def __init__(self, bullet : Bullet):
+        self._bullet = bullet
+
+        print(self.y)
+
+    def __getattr__(self, name):
+        """
+        If an attribute is not found on the decorator, it delegates the lookup to the wrapped bullet.
+        """
+        return getattr(self._bullet, name)
+    
+    def __setattr__(self, name, value):
+        # Delegate attribute setting to the wrapped bullet
+        if name == "_bullet":
+            # Allow setting the wrapped bullet itself
+            super().__setattr__(name, value)
+        else:
+            setattr(self._bullet, name, value)
+    
+
+    def on_hit(self, bullets):
+        new_bullet = Bullet(self.settings, self.screen, self.ship, self.angle)
+        new_bullet.rect = self.rect.copy()
+        new_bullet.y = self.y
+        new_bullet.x = self.x
+
+
+        bullets.add(new_bullet)
+
+        self._bullet.on_hit(bullets) 
+
+
+

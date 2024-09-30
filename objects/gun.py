@@ -30,4 +30,20 @@ class DoubleGun(Gun):
     
 class SplitterGun(Gun):
     def create_bullet(self, settings, screen, ship):
-        return [bullet.SplitterBullet(settings, screen, ship)]
+        new_bullet = bullet.Bullet(settings, screen, ship)
+        new_bullet = bullet.SplitterDecorator(new_bullet)
+        return [new_bullet]
+    
+class PierceGun(Gun):
+    def create_bullet(self, settings, screen, ship):
+        new_bullet = bullet.Bullet(settings, screen, ship)
+        new_bullet = bullet.PierceDecorator(new_bullet)
+        return [new_bullet]
+    
+class SplitterPierceGun(Gun):
+    def create_bullet(self, settings, screen, ship):
+        new_bullet = bullet.Bullet(settings, screen, ship)
+        new_bullet = bullet.PierceDecorator(new_bullet)
+        new_bullet = bullet.SplitterDecorator(new_bullet)
+        return [new_bullet]
+        

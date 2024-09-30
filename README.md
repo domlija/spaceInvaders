@@ -18,5 +18,5 @@ To start the code simply run `python space_invaders.py`
 |Prototype| Used to copy rectangles for Splitter Bullets|
 |Listener | Used to update scoreboard based on game events|
 |Iterator| Used to iterate over various collections with `for`|
-|Decorator| **TBD** (probably for powerups e.g. shield)|
+|Decorator| Used to combine various bullet behaviours on hit|
  
