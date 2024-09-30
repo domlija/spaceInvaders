@@ -19,4 +19,5 @@ To start the code simply run `python space_invaders.py`
 |Listener | Used to update scoreboard based on game events|
 |Iterator| Used to iterate over various collections with `for`|
 |Decorator| Used to combine various bullet behaviours on hit|
+|Singleton| Used to allow only one stats object|
  
