@@ -135,11 +135,14 @@ class GameLoop:
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
             self.scoreboard.prep_high_score()
+            # We can think of scoreboard.prep_high_score as a crude listener mechanism.
+            # In general case we would iterate over some collection of high score listeners 
+            # and call their prep_high_score methods. In case the scoreboard has no direct reference 
+            # to stats we could pass it as an argument.
 
     def check_bullet_alien_collision(self):
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
-        # TODO increase score
 
         if collisions:
             for bullet, aliens in collisions.items():
@@ -153,7 +156,7 @@ class GameLoop:
             self.bullets.empty()
             self.settings.increase_speed()
 
-            # TODO update scoreboard
+
             self.stats.level += 1
             self.scoreboard.prep_level()
 
@@ -171,11 +174,14 @@ class GameLoop:
         self.settings.fleet_direction *= -1
 
     def ship_hit(self):
-        # TODO add health check
+
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
 
             self.scoreboard.prep_ships()
+            # Again the same crude listener pattern. In this case
+            # we notify the ships (in-game lives) listener.
+            
         else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
@@ -198,6 +204,12 @@ class GameLoop:
     def update_aliens(self):
         self.check_fleet_edges()
         self.aliens.update()
+        # This is a basic composite example. Even though we didn't implement
+        # pygame.sprite.Group it functions as a basic composite pattern
+        # Instead of knowing how each alien (but in more general case each sprite subclass) updates
+        # It calls update method of each individual sprite subclass. In more rigid languages
+        # group and sprite should implement the same interface (in this case Updatable)
+        # but that is not necessary when working with dynamic languages.
 
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
             self.ship_hit()

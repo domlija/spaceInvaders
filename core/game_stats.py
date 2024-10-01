@@ -2,7 +2,7 @@ class Singleton(type):
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
-        print(type(cls))
+        print(super(Singleton).__get__(cls))
         print(cls)
         if cls not in cls._instances:
             # cls._instances[cls] = super(Singleton).__get__(cls).__call__(*args, **kwargs)
@@ -30,13 +30,6 @@ class Singleton(type):
 
 class GameStats(metaclass=Singleton):
     """Track statistics for Alien Invasion."""
-
-    # _instance = None
-
-    # def __new__(cls, *args):
-    #     if not cls._instance:
-    #         cls._instance = super(GameStats, cls).__new__(cls)
-    #     return cls._instance
 
     def __init__(self, ai_settings):
         """Initialize statistics."""
