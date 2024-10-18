@@ -134,7 +134,10 @@ class GameLoop:
     def check_highscore(self):
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
-            self.scoreboard.prep_high_score()
+
+            #TODO: draw new high score
+            
+
             # We can think of scoreboard.prep_high_score as a crude listener mechanism.
             # In general case we would iterate over some collection of high score listeners 
             # and call their prep_high_score methods. In case the scoreboard has no direct reference 
@@ -147,7 +150,9 @@ class GameLoop:
         if collisions:
             for bullet, aliens in collisions.items():
                 self.stats.score += self.settings.alien_points * len(aliens)
-                self.scoreboard.prep_score()
+
+                #TODO: update game score
+                
 
                 bullet.on_hit(self.bullets)
             self.check_highscore()
@@ -158,7 +163,9 @@ class GameLoop:
 
 
             self.stats.level += 1
-            self.scoreboard.prep_level()
+
+            #TODO: update level on screen
+            
 
             self.fleetFactory.create_fleet(self.screen, self.ship, self.aliens)
 
@@ -178,7 +185,8 @@ class GameLoop:
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
 
-            self.scoreboard.prep_ships()
+            #TODO update new ships on screen
+            
             # Again the same crude listener pattern. In this case
             # we notify the ships (in-game lives) listener.
             
