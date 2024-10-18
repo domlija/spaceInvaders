@@ -76,12 +76,15 @@ class GameLoop:
 
     def check_play_button(self, x, y):
         clicked = self.play_button.rect.collidepoint(x, y)
-        if clicked and not self.stats.game_active:
+        if clicked :
             self.settings.initialize_dynamic_settings()
             pygame.mouse.set_visible(False)
 
             self.stats.reset_stats()
-            self.stats.game_active = True
+
+            #TODO: set game_stats.is_active to true
+
+            
 
             self.scoreboard.prep_high_score()
             self.scoreboard.prep_level()
@@ -160,7 +163,8 @@ class GameLoop:
     def ship_hit(self):
 
         if self.stats.ships_left > 0:
-            self.stats.ships_left -= 1
+            #TODO: update ships_left stats
+            pass
 
             #TODO update new ships(lives) on screen
             
@@ -168,8 +172,8 @@ class GameLoop:
             # we notify the ships (in-game lives) listener.
             
         else:
-            self.stats.game_active = False
-            pygame.mouse.set_visible(True)
+            #TODO end the game and show mouse
+            pass
 
         self.aliens.empty()
         self.bullets.empty()

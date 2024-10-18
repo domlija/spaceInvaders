@@ -1,13 +1,6 @@
 class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        print(super(Singleton).__get__(cls))
-        print(cls)
-        if cls not in cls._instances:
-            # cls._instances[cls] = super(Singleton).__get__(cls).__call__(*args, **kwargs)
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
+    #TODO: implement singleton metaclass
+    pass
 
 
 # Okay, lets explain this whole construct. First we define a singleton metaclass. What is a metaclass?
@@ -33,19 +26,9 @@ class GameStats(metaclass=Singleton):
 
     def __init__(self, ai_settings):
         """Initialize statistics."""
-        if not hasattr(self, "initialized"):
-            self.ai_settings = ai_settings
-            self.reset_stats()
-
-            # Start game in an inactive state.
-            self.game_active = False
-
-            # High score should never be reset.
-            self.high_score = 0
-            self.initalized = True
+        #TODO: implement init
+        pass
 
     def reset_stats(self):
         """Initialize statistics that can change during the game."""
-        self.ships_left = self.ai_settings.ship_limit
-        self.score = 0
-        self.level = 1
+        #TODO: implement stats reset mechanism
