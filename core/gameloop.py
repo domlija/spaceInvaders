@@ -100,7 +100,9 @@ class GameLoop:
         for bullet in self.bullets:
             bullet.draw_bullet()
         self.ship.blitme()
-        self.aliens.draw(self.screen)
+
+        #TODO add alien drawing
+        
 
         # TODO add scoreboard
         self.scoreboard.show_score()
@@ -144,48 +146,23 @@ class GameLoop:
             # to stats we could pass it as an argument.
 
     def check_bullet_alien_collision(self):
-        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
-
-
-        if collisions:
-            for bullet, aliens in collisions.items():
-                self.stats.score += self.settings.alien_points * len(aliens)
-
-                #TODO: update game score
-                
-
-                bullet.on_hit(self.bullets)
-            self.check_highscore()
-
-        if len(self.aliens) == 0:
-            self.bullets.empty()
-            self.settings.increase_speed()
-
-
-            self.stats.level += 1
-
-            #TODO: update level on screen
-            
-
-            self.fleetFactory.create_fleet(self.screen, self.ship, self.aliens)
+        #TODO: check if bullet hit any alien
+        pass
 
     def check_fleet_edges(self):
-        for alien in self.aliens.sprites():
-            if alien.check_edges():
-                self.change_fleet_direction()
-                break
+        #TODO: check if the fleet touched an edge
+        pass
 
     def change_fleet_direction(self):
-        for alien in self.aliens.sprites():
-            alien.rect.y += self.settings.fleet_drop_speed
-        self.settings.fleet_direction *= -1
+        #TODO: implement changing fleet direction
+        pass
 
     def ship_hit(self):
 
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
 
-            #TODO update new ships on screen
+            #TODO update new ships(lives) on screen
             
             # Again the same crude listener pattern. In this case
             # we notify the ships (in-game lives) listener.
@@ -197,21 +174,20 @@ class GameLoop:
         self.aliens.empty()
         self.bullets.empty()
 
-        self.fleetFactory.create_fleet(self.screen, self.ship, self.aliens)
+        #TODO: create new fleet
+
         self.ship.center_ship()
 
         sleep(0.5)
 
     def check_fleet_bottom(self):
-        screen_rect = self.screen.get_rect()
-        for alien in self.aliens.sprites():
-            if alien.rect.bottom >= screen_rect.bottom:
-                self.ship_hit()
-                break
+        #TODO: add logic to check if fleet came to the bottom
+        pass
 
     def update_aliens(self):
-        self.check_fleet_edges()
-        self.aliens.update()
+        #TODO: add logic to update fleet movement
+
+
         # This is a basic composite example. Even though we didn't implement
         # pygame.sprite.Group it functions as a basic composite pattern
         # Instead of knowing how each alien (but in more general case each sprite subclass) updates
@@ -219,7 +195,6 @@ class GameLoop:
         # group and sprite should implement the same interface (in this case Updatable)
         # but that is not necessary when working with dynamic languages.
 
-        if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            self.ship_hit()
+        pass
 
-        self.check_fleet_bottom()
+        

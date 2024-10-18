@@ -29,10 +29,5 @@ class FleetFactory:
         aliens.add(alien)
 
     def create_fleet(self, screen, ship, aliens):
-        alien = Alien(self.settings, screen)
-        cols = self.get_number_aliens_x(alien.rect.width)
-        rows = self.get_number_rows(ship.rect.height, alien.rect.height)
-
-        for row in range(rows):
-            for col in range(cols):
-                self.create_alien(screen, aliens, col, row)
+        #TODO add fleet creation
+        pass
