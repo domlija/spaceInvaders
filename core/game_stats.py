@@ -24,6 +24,7 @@ class Singleton(type):
 class GameStats(metaclass=Singleton):
     """Track statistics for Alien Invasion."""
 
+    game_active = False
     def __init__(self, ai_settings):
         """Initialize statistics."""
         #TODO: implement init

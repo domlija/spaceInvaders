@@ -83,6 +83,7 @@ class GameLoop:
             self.stats.reset_stats()
 
             #TODO: set game_stats.is_active to true
+            GameStats.is_active = True
 
             
 

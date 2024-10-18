@@ -52,66 +52,10 @@ class Bullet(Sprite):
 
 
 class SplitterDecorator(Bullet):
-
-    def __init__(self, bullet: Bullet):
-        self._bullet = bullet
-
-    def __getattr__(self, name):
-        """
-        If an attribute is not found on the decorator, it delegates the lookup to the wrapped bullet.
-        """
-        return getattr(self._bullet, name)
-
-    def __setattr__(self, name, value):
-        # Delegate attribute setting to the wrapped bullet
-        if name == "_bullet":
-            # Allow setting the wrapped bullet itself
-            super().__setattr__(name, value)
-        else:
-            setattr(self._bullet, name, value)
-
-    def on_hit(self, bullets):
-        left_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(0))
-        left_bullet.rect = self.rect.copy()
-        left_bullet.y = self.y
-        left_bullet.x = self.x
-
-        right_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(180))
-        right_bullet.rect = self.rect.copy()
-        right_bullet.y = self.y
-        right_bullet.x = self.x
-
-        bullets.add(*[left_bullet, right_bullet])
-
-        self._bullet.on_hit(bullets)
+    #TODO: implement splitter decorator
+    pass
 
 
 class PierceDecorator(Bullet):
-    def __init__(self, bullet: Bullet):
-        self._bullet = bullet
-
-        print(self.y)
-
-    def __getattr__(self, name):
-        """
-        If an attribute is not found on the decorator, it delegates the lookup to the wrapped bullet.
-        """
-        return getattr(self._bullet, name)
-
-    def __setattr__(self, name, value):
-        # Delegate attribute setting to the wrapped bullet
-        if name == "_bullet":
-            # Allow setting the wrapped bullet itself
-            super().__setattr__(name, value)
-        else:
-            setattr(self._bullet, name, value)
-
-    def on_hit(self, bullets):
-        new_bullet = Bullet(self.settings, self.screen, self.ship, self.angle)
-        new_bullet.rect = self.rect.copy()
-        new_bullet.y = self.y
-        new_bullet.x = self.x
-
-        bullets.add(new_bullet)
-
-        self._bullet.on_hit(bullets)
+    #TODO: implement splitter decorator
+    pass
