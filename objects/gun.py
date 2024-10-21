@@ -21,14 +21,8 @@ class ClassicGun(Gun):
 
 
 class DoubleGun(Gun):
-    def __init__(self):
-        super().__init__()
-
-    def create_bullet(self, settings, screen, ship):
-        return [
-            bullet.Bullet(settings, screen, ship, math.radians(110)),
-            bullet.Bullet(settings, screen, ship, math.radians(70)),
-        ]
+    #TODO implement double gun
+    pass
 
 
 class SplitterGun(Gun):
