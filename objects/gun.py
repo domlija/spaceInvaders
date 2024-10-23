@@ -17,7 +17,7 @@ class ClassicGun(Gun):
         super().__init__()
 
     def create_bullet(self, settings, screen, ship):
-        pass
+        return [bullet.Bullet(settings, screen, ship)]
 
 
 class DoubleGun(Gun):

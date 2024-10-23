@@ -122,6 +122,7 @@ class GameLoop:
             new_bullets = self.ship.gun.create_bullet(
                 self.settings, self.screen, self.ship
             )
+            print(new_bullets)
             self.bullets.add(*new_bullets)
 
     def update_bullets(self):
