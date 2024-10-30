@@ -6,6 +6,7 @@ from core.gameloop import GameLoop
 from core.settings import Settings
 from core.game_stats import GameStats
 from objects.scoreborad import Scoreboard
+from objects.alien import Alien
 
 
 def main():
@@ -19,27 +20,30 @@ def main():
 
     stats = GameStats(settings)
     scoreboard = Scoreboard(settings, screen, stats)
-
+    a = Alien(settings, screen)
     ship = Ship(settings, screen)
     bullets = pygame.sprite.Group()
-    aliens = pygame.sprite.Group()
-
+    aliens = pygame.sprite.Group(a)
+    
+    
     bg_color = (230, 230, 230)
     game_loop = GameLoop(
         settings, screen, ship, aliens, bullets, play_button, scoreboard, stats
     )
 
     game_loop.fleetFactory.create_fleet(screen, ship, aliens)
-
+    
     while True:
         game_loop.check_events()
-
+        
         if True:
             ship.update()
             game_loop.update_bullets()
             game_loop.update_aliens()
 
+        
         game_loop.update_screen()
+        
 
 
 if __name__ == "__main__":

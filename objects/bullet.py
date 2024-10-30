@@ -32,7 +32,7 @@ class Bullet(Sprite):
     def update(self):
         """Move the bullet up the screen."""
         # Update the decimal position of the bullet.
-        self.y += self.speed * math.sin(self.angle)
+        self.y -= self.speed * math.sin(self.angle)
         self.x += self.speed * math.cos(self.angle)
 
         self.rect.x = int(self.x)

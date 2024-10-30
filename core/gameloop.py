@@ -106,6 +106,7 @@ class GameLoop:
         self.ship.blitme()
 
         #TODO add alien drawing
+        self.aliens.draw(self.screen)
         
 
         # TODO add scoreboard
