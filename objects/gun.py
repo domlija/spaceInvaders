@@ -32,7 +32,10 @@ class DoubleGun(Gun):
 
 class SplitterGun(Gun):
     #TODO implement splitter gun
-    pass
+    def create_bullet(self, settings, screen, ship):
+        new_bullet = bullet.Bullet(settings, screen, ship)
+        new_bullet = bullet.SplitterDecorator(new_bullet)
+        return [new_bullet]
 
 
 class PierceGun(Gun):

@@ -47,8 +47,33 @@ class Bullet(Sprite):
 
 
 class SplitterDecorator(Bullet):
-    #TODO: implement splitter decorator
-    pass
+    def __init__(self, bullet: Bullet):
+        self._bullet = bullet
+
+    def __getattr__(self, name):
+        return getattr(self._bullet, name)
+    
+    def __setattr__(self, name: str, value: Any):
+        if name == '_bullet':
+            super().__setattr__(name, value)
+        else:   
+            setattr(self._bullet, name, value)
+
+    def on_hit(self, bullets):
+        left_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(180))
+        left_bullet.rect = self.rect.copy()
+        left_bullet.rect.x = self.x
+        left_bullet.rect.y = self.y
+
+        right_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(0))
+        right_bullet.rect = self.rect.copy()
+        right_bullet.rect.x = self.x
+        right_bullet.rect.y = self.y
+
+        bullets.add(*[left_bullet, right_bullet])
+
+        self._bullet.on_hit(bullets)
+
 
 
 class PierceDecorator(Bullet):
