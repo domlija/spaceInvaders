@@ -1,6 +1,15 @@
+from typing import Any
+
+
 class Singleton(type):
     #TODO: implement singleton metaclass
-    pass
+    _instances = {}
+
+    def __call__(cls, *args: Any, **kwds: Any) -> Any:
+        if cls not in cls._instances:
+            cls._instances[cls] = super().__call__(*args, **kwds)
+        return cls._instances[cls]
+    
 
 
 # Okay, lets explain this whole construct. First we define a singleton metaclass. What is a metaclass?
@@ -25,11 +34,20 @@ class GameStats(metaclass=Singleton):
     """Track statistics for Alien Invasion."""
 
     game_active = False
-    def __init__(self, ai_settings):
+    def __init__(self, settings):
         """Initialize statistics."""
         #TODO: implement init
-        pass
+        self.settings = settings
+        self.high_score = 0
+        self.score = 0
+        self.level = 1
+        self.game_active = False
+        self.ships_left = 3
+
 
     def reset_stats(self):
         """Initialize statistics that can change during the game."""
         #TODO: implement stats reset mechanism
+        self.score = 0
+        self.level = 1
+        self.game_active = False

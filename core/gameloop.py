@@ -104,12 +104,9 @@ class GameLoop:
         for bullet in self.bullets:
             bullet.draw_bullet()
         self.ship.blitme()
-
-        #TODO add alien drawing
-        self.aliens.draw(self.screen)
         
+        self.aliens.draw(self.screen)
 
-        # TODO add scoreboard
         self.scoreboard.show_score()
 
         if not self.stats.game_active:
@@ -153,21 +150,26 @@ class GameLoop:
 
     def check_bullet_alien_collision(self):
         #TODO: check if bullet hit any alien
-        pass
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
+        if collisions:
+            for bullet, alien in collisions.items():
+                bullet.on_hit(self.bullets)
 
     def check_fleet_edges(self):
         #TODO: check if the fleet touched an edge
-        pass
+        if self.aliens.check_edges():
+            self.change_fleet_direction()
 
     def change_fleet_direction(self):
         #TODO: implement changing fleet direction
-        pass
+        self.aliens.change_direction()
 
     def ship_hit(self):
 
         if self.stats.ships_left > 0:
             #TODO: update ships_left stats
-            pass
+            self.stats.ships_left -= 1
 
             #TODO update new ships(lives) on screen
             
@@ -182,6 +184,7 @@ class GameLoop:
         self.bullets.empty()
 
         #TODO: create new fleet
+        self.fleetFactory.create_fleet(self.screen, self.ship, self.aliens)
 
         self.ship.center_ship()
 
@@ -189,7 +192,9 @@ class GameLoop:
 
     def check_fleet_bottom(self):
         #TODO: add logic to check if fleet came to the bottom
-        pass
+        if self.aliens.check_bottom():
+            self.ship_hit()
+        
 
     def update_aliens(self):
         #TODO: add logic to update fleet movement
@@ -202,6 +207,12 @@ class GameLoop:
         # group and sprite should implement the same interface (in this case Updatable)
         # but that is not necessary when working with dynamic languages.
 
-        pass
+        self.check_fleet_edges()
+        self.aliens.update()
+
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self.ship_hit()
+
+        self.check_fleet_bottom()
 
         

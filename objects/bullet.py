@@ -32,6 +32,7 @@ class Bullet(Sprite):
     def update(self):
         """Move the bullet up the screen."""
         # Update the decimal position of the bullet.
+        
         self.y -= self.speed * math.sin(self.angle)
         self.x += self.speed * math.cos(self.angle)
 
@@ -51,6 +52,48 @@ class SplitterDecorator(Bullet):
         self._bullet = bullet
 
     def __getattr__(self, name):
+        
+        return getattr(self._bullet, name)
+    
+    def __setattr__(self, name: str, value: Any):
+        if name == '_bullet':
+            super().__setattr__(name, value)
+        else:   
+            setattr(self._bullet, name, value)
+            
+
+            
+
+    def on_hit(self, bullets):
+        left_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(180))
+        left_bullet.rect = self.rect.copy()
+
+       
+        left_bullet.rect.x = self.x
+        left_bullet.rect.y = self.y
+        left_bullet.x = self.x 
+        left_bullet.y = self.y
+        
+
+        right_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(0))
+        right_bullet.rect = self.rect.copy()
+        right_bullet.rect.x = self.x
+        right_bullet.rect.y = self.y
+        right_bullet.x = self.x 
+        right_bullet.y = self.y
+
+        bullets.add(*[left_bullet, right_bullet])
+
+        self._bullet.on_hit(bullets)
+
+
+
+class PierceDecorator(Bullet):
+    def __init__(self, bullet: Bullet):
+        self._bullet = bullet
+
+    def __getattr__(self, name):
+        
         return getattr(self._bullet, name)
     
     def __setattr__(self, name: str, value: Any):
@@ -60,22 +103,11 @@ class SplitterDecorator(Bullet):
             setattr(self._bullet, name, value)
 
     def on_hit(self, bullets):
-        left_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(180))
-        left_bullet.rect = self.rect.copy()
-        left_bullet.rect.x = self.x
-        left_bullet.rect.y = self.y
-
-        right_bullet = Bullet(self.settings, self.screen, self.ship, math.radians(0))
-        right_bullet.rect = self.rect.copy()
-        right_bullet.rect.x = self.x
-        right_bullet.rect.y = self.y
-
-        bullets.add(*[left_bullet, right_bullet])
+        bullet = Bullet(self.settings, self.screen, self.ship, self.angle)
+        bullet.rect = self.rect 
+        bullet.x = self.x 
+        bullet.y = self.y
+        
+        bullets.add(*[bullet])
 
         self._bullet.on_hit(bullets)
-
-
-
-class PierceDecorator(Bullet):
-    #TODO: implement splitter decorator
-    pass

@@ -7,6 +7,7 @@ from core.settings import Settings
 from core.game_stats import GameStats
 from objects.scoreborad import Scoreboard
 from objects.alien import Alien
+from objects.fleet import Fleet
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
     a = Alien(settings, screen)
     ship = Ship(settings, screen)
     bullets = pygame.sprite.Group()
-    aliens = pygame.sprite.Group(a)
+    aliens = Fleet(settings, screen)
     
     
     bg_color = (230, 230, 230)
